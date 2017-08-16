@@ -65,17 +65,17 @@ class Character_Ids
 
 class KuroganeHammer
 {
-    private static $ch;
+    private $curl_handle;
     const API_URL_BASE = 'http://api.kuroganehammer.com';
 
     function __construct()
     {
-        $this->ch = $this->initializeCurlResource();
+        $this->curl_handle = $this->initializeCurlResource();
     }
 
     function __destruct()
     {
-        curl_close($this->ch);
+        curl_close($this->curl_handle);
     }
 
     /**
@@ -217,29 +217,34 @@ class KuroganeHammer
     
     /**
      * Function to execute generalized GET requests.
+     * 
+     * TODO: Should I return false, or throw an exception.
      *
      * @param string $path API path in form '/api/endpoint'.
      * @throws Exception if failed to decode JSON.
-     * @return mixed False if not found, array if successul response.
+     * @return array The API's response decoded as a PHP array, whether the
+     *  resource is found or not (an error message and HTTP code are returned in
+     *  an array if not.)
      */
     private function get($path)
     {
         $url = self::API_URL_BASE . $path;
 
-        curl_setopt($this->ch, CURLOPT_URL, $url);
-        $response = curl_exec($this->ch);
-
-        $http_code = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
-
-        if ($http_code != 200) {
-            return false;
-        }
-
+        curl_setopt($this->curl_handle, CURLOPT_URL, $url);
+        $response = curl_exec($this->curl_handle);
+        
         try {
             $response = $this->json_decode_with_exception($response);
         } catch (Exception $e) {
             throw $e;
         }
+
+        $http_code = curl_getinfo($this->curl_handle, CURLINFO_HTTP_CODE);
+        if ($http_code != 200) {
+            $response['httpCode'] = $http_code;
+            return $response;
+        }
+
 
         // false if not found
         if (isset($response['message'])) {
@@ -271,4 +276,4 @@ class KuroganeHammer
 
 $kh = new KuroganeHammer();
 
-print_r($kh->getThrows());
+print_r($kh->getCharacters('morf'));
