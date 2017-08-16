@@ -1,33 +1,38 @@
 <?php
 
+require_once('StaticCurlHandle.php');
+
 /**
  * Abstract superclass to represent collections of endpoints nested underneat
  * a parent endpoint (such as '/moves/...' or 'characters...')
  */
 abstract class EndpointFamily {
     const API_URL_BASE = 'http://api.kuroganehammer.com';
-    protected $curl_handle; 
-
+    private $curlInstance;
+    
     function __construct(){
-        $this->configureCurlHandle();
+        $this->curlInstance = StaticCurlHandle::getInstance();
     }
 
     // TODO: make the curl handle statically shared (Singleton pattern)
     protected function configureCurlHandle(){
-        $this->curl_handle = curl_init();
-        curl_setopt_array($this->curl_handle, array(
-            CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_CONNECTTIMEOUT  => 30,
-            CURLOPT_TIMEOUT         => 30,
-            CURLOPT_ENCODING        => "gzip",
-            CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_HEADER          => false,
-            CURLOPT_NOBODY          => false,
-            CURLOPT_HTTPHEADER      => array(
-                'Accept: application/json,'
-            ),
-        ));    
+        if (self::$curl_handle !== null){
+            $this->curl_handle = curl_init();
+            curl_setopt_array($this->curl_handle, array(
+                CURLOPT_SSL_VERIFYPEER  => true,
+                CURLOPT_RETURNTRANSFER  => true,
+                CURLOPT_CONNECTTIMEOUT  => 30,
+                CURLOPT_TIMEOUT         => 30,
+                CURLOPT_ENCODING        => "gzip",
+                CURLOPT_FOLLOWLOCATION  => true,
+                CURLOPT_HEADER          => false,
+                CURLOPT_NOBODY          => false,
+                CURLOPT_HTTPHEADER      => array(
+                    'Accept: application/json,'
+                ),
+            ));    
+
+        }
     }
 
     /**
@@ -42,10 +47,14 @@ abstract class EndpointFamily {
     protected function get($path)
     {
         $url = self::API_URL_BASE . $path;
+        // var_dump($this->staticCurlHandle);
+        // exit;
 
-        curl_setopt($this->curl_handle, CURLOPT_URL, $url);
-        $response = curl_exec($this->curl_handle);
-        $http_code = curl_getinfo($this->curl_handle, CURLINFO_HTTP_CODE);
+        curl_setopt($this->curlInstance->getHandle(), CURLOPT_URL, $url);
+        $response = curl_exec($this->curlInstance->getHandle());
+        $http_code = curl_getinfo(
+            $this->curlInstance->getHandle(), CURLINFO_HTTP_CODE);
+
         
         // 404 errors do not return JSON, so we handle them first
         if ($http_code == 404){

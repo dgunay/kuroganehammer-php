@@ -1,68 +1,24 @@
 <?php
 
-require('Characters.php');
-
+require_once('Characters.php');
 
 class KuroganeHammer
 {
-    private $curl_handle;
+    /**
+     * Characters class, containing functions to get /Characters endpoints
+     *
+     * @var object Characters
+     */
     public $characters;
 
     function __construct()
     {
-        $this->curl_handle = $this->initializeCurlResource();
         $this->characters = new Characters();
     }
 
     function __destruct()
     {
-        curl_close($this->curl_handle);
-    }
 
-    /**
-     * Initializes a cURL resource for use making calls to the API.
-     *
-     * @return resource A cURL resource.
-     */
-    private function initializeCurlResource()
-    {
-        $ch = curl_init();
-        curl_setopt_array($ch, array(
-            CURLOPT_SSL_VERIFYPEER  => true,
-            CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_CONNECTTIMEOUT  => 30,
-            CURLOPT_TIMEOUT         => 30,
-            CURLOPT_ENCODING        => "gzip",
-            CURLOPT_FOLLOWLOCATION  => true,
-            CURLOPT_HEADER          => false,
-            CURLOPT_NOBODY          => false,
-            CURLOPT_HTTPHEADER      => array(
-                'Accept: application/json,'
-            ),
-        ));
-
-        return $ch;
-    }
-  
-    /**
-     * Gets all Smash 4 characters, or a single character by ID or name.
-     *
-     * @param mixed $id ID number of a character, or name.
-     * @param bool $details Whether or not to include detailed metadata.
-     * @return mixed Response from the API decoded into a PHP array, or false
-     *  if ID is provided but not found.
-     */
-    function getCharacters($id = null, $details = false)
-    {
-        if ($id !== null){
-            if ($details === true){
-                return $this->charactersRequest($id, 'details');
-            }
-
-            return $this->charactersRequest($id);
-        }
-
-        return $this->charactersRequest();
     }
 
     function getDetailedMoves($id = null){
@@ -273,4 +229,4 @@ class KuroganeHammer
 
 $kh = new KuroganeHammer();
 
-print_r($kh->characters->characters());
+print_r($kh->characters->angles());
