@@ -1,76 +1,17 @@
 <?php
 
+require('Characters.php');
 
-class Character_Ids
-{
-    const BAYONETTA         = 1;
-    const BOWSER            = 2;
-    const BOWSER_JR         = 3;
-    const CAPTAIN_FALCON    = 4;
-    const CHARIZARD         = 5;
-    const CLOUD             = 6;
-    const CORRIN            = 7;
-    const DARK_PIT          = 8;
-    const DIDDY_KONG        = 9;
-    const DONKEY_KONG       = 10;
-    const DR_MARIO          = 11;
-    const DUCK_HUNT         = 12;
-    const FALCO             = 13;
-    const FOX               = 14;
-    const GANONDORF         = 15;
-    const GRENINJA          = 16;
-    const IKE               = 17;
-    const JIGGLYPUFF        = 18;
-    const KING_DEDEDE       = 19;
-    const KIRBY             = 20;
-    const LINK              = 21;
-    const LITTLE_MAC        = 22;
-    const LUCARIO           = 23;
-    const LUCAS             = 24;
-    const LUCINA            = 25;
-    const LUIGI             = 26;
-    const MARIO             = 27;
-    const MARTH             = 28;
-    const MEGA_MAN          = 29;
-    const META_KNIGHT       = 30;
-    const MEWTWO            = 31;
-    const MII_BRAWLER       = 32;
-    const MII_GUNNER        = 33;
-    const MII_SWORDFIGHTER  = 34;
-    const MR_GAME_WATCH     = 35;
-    const NESS              = 36;
-    const OLIMAR            = 37;
-    const PACMAN            = 38;
-    const PALUTENA          = 39;
-    const PEACH             = 40;
-    const PIKACHU           = 41;
-    const PIT               = 42;
-    const ROB               = 43;
-    const ROBIN             = 44;
-    const ROSALINA_LUMA     = 45;
-    const ROY               = 46;
-    const RYU               = 47;
-    const SAMUS             = 48;
-    const SHEIK             = 49;
-    const SHULK             = 50;
-    const SONIC             = 51;
-    const TOON_LINK         = 52;
-    const VILLAGER          = 53;
-    const WARIO             = 54;
-    const WII_FIT_TRAINER   = 55;
-    const YOSHI             = 56;
-    const ZELDA             = 57;
-    const ZERO_SUIT_SAMUS   = 58;
-}
 
 class KuroganeHammer
 {
     private $curl_handle;
-    const API_URL_BASE = 'http://api.kuroganehammer.com';
+    public $characters;
 
     function __construct()
     {
         $this->curl_handle = $this->initializeCurlResource();
+        $this->characters = new Characters();
     }
 
     function __destruct()
@@ -94,7 +35,10 @@ class KuroganeHammer
             CURLOPT_ENCODING        => "gzip",
             CURLOPT_FOLLOWLOCATION  => true,
             CURLOPT_HEADER          => false,
-            CURLOPT_NOBODY          => false
+            CURLOPT_NOBODY          => false,
+            CURLOPT_HTTPHEADER      => array(
+                'Accept: application/json,'
+            ),
         ));
 
         return $ch;
@@ -128,78 +72,82 @@ class KuroganeHammer
         return $this->charactersRequest($id, 'detailedmoves');
     }
 
-    function getMovements($id = null){
-        if ($id === null){
-            return $this->get('/api/Movements');
-        }
-        return $this->charactersRequest($id, 'movements');
-    }
-
-    function getMoves($id = null){
-        if ($id === null){
-            return $this->get('/api/Moves');
-        }
-        return $this->charactersRequest($id, 'moves');        
-    }
-
+    
+    
     function getThrows($id = null){
         if ($id === null){
             return $this->get('/api/Throws');
         }
         return $this->charactersRequest($id, 'throws');        
     }
-
+    
     function getCharacterAttributes($id = null){
-        if ($id === null){
-            return $this->get('/api/CharacterAttributes');
+        $path = '/api/CharacterAttributes';
+        if ($id !== null){
+            if (is_numeric($id)){
+                $path .= '/' . $id;
+            }
+            else {
+                $path .= '/name/' . $id;
+            }
         }
-        return $this->charactersRequest($id, 'characterattributes');        
+        return $this->get($path);
     }
-
-    function getSmashAttributeType($type){
-        // TODO: Figure out what the heck this API endpoint does
-    }
-
-    function getAngles($id = null){
-        if ($id === null){
-            return $this->get('/api/Angles');
+    
+    function getCharacterAttributeTypes($id = null){
+        $path = '/api/characterattributetypes';
+        if ($id !== null){
+            $path .= '/' . $id;
         }
-        return $this->charactersRequest($id, 'angles');        
+        return $this->get($path);
+    }
+    
+    function getFirstActionableFrames($id = null){
+        $path = '/api/FirstActionableFrames';
+        if ($id !== null){
+            $path .= '/' . $id;
+        }
+        return $this->get($path);
     }
     
     function getHitboxes($id = null){
-        if ($id === null){
-            return $this->get('/api/Hitboxes');
+        $path = '/api/Hitboxes';
+        if ($id !== null){
+            $path .= '/' . $id;
         }
-        return $this->charactersRequest($id, 'hitboxes');        
+        return $this->get($path);
     }
-
+    
     function getKnockbackGrowths($id = null){
-        if ($id === null){
-            return $this->get('/api/KnockbackGrowths');
+        $path = '/api/KnockbackGrowths';
+        if ($id !== null){
+            $path .= '/' . $id;
         }
-        return $this->charactersRequest($id, 'knockbackgrowths');        
+        return $this->get($path);    
+    }
+    
+    function getMovements($id = null){
+        $path = '/api/movements';
+        if ($id !== null){
+            if (is_numeric($id)){
+                $path .= '/' . $id;
+            }
+            else {
+                $path .= '/name/' . $id;
+            }
+        }
+        return $this->get($path);
+    }
+    
+    function getMoves($id = null){
+        if ($id === null){
+            return $this->get('/api/moves');
+        }
+        return $this->movesRequest($id);        
     }
 
-    function getBaseDamages($id = null){
-        if ($id === null){
-            return $this->get('/api/BaseDamages');
-        }
-        return $this->charactersRequest($id, 'basedamages');        
-    }
-
-    /**
-     * Helper function to generalize requests across all Characters API 
-     * endpoints.
-     *
-     * @param mixed $id ID or name of a character
-     * @param string $endpoint The api/characters/endpoint to use.
-     * @return mixed Response from the API decoded into a PHP array, or false
-     *  if ID is provided but not found.
-     */ 
-    private function charactersRequest($id = null, $endpoint = null)
-    {
-        $path = '/api/characters';
+    private function movesRequest($id = null, $endpoint = null){
+        $path = '/api/moves';
         if ($id !== null) {
             if (!is_numeric($id)) {
                 $path .= '/name';
@@ -214,12 +162,49 @@ class KuroganeHammer
         
         return $this->get($path);
     }
+
+    function getSmashAttributeType($type){
+        // TODO: Figure out what the heck this API endpoint does
+    }
+    
+    function getAngles($id = null){
+        $path = '/api/Angles';
+        if ($id !== null){
+            $path .= '/'.$id;
+        }
+        return $this->get($path);        
+    }
+    
+    function getNotations($id = null){
+        if ($id === null){
+            return $this->get('/api/notations');
+        }
+        return $this->charactersRequest($id, 'notations');        
+    }
+    
+    
+    
+    
+    function getBaseKnockbacks($id = null){
+        $path = '/api/BaseKnockbacks';
+        if ($id !== null){
+            $path .= '/' . $id;
+        }
+        return $this->get($path);        
+    }
+    
+    function getBaseDamages($id = null){
+        $path = '/api/BaseDamages';
+        if ($id !== null){
+            $path .= '/' . $id;
+        }
+        return $this->get($path);
+    }
+    
+    
     
     /**
      * Function to execute generalized GET requests.
-     * 
-     * TODO: Should I return false, or throw an exception.
-     *
      * @param string $path API path in form '/api/endpoint'.
      * @throws Exception if failed to decode JSON.
      * @return array The API's response decoded as a PHP array, whether the
@@ -232,26 +217,38 @@ class KuroganeHammer
 
         curl_setopt($this->curl_handle, CURLOPT_URL, $url);
         $response = curl_exec($this->curl_handle);
+        $http_code = curl_getinfo($this->curl_handle, CURLINFO_HTTP_CODE);
         
+        // 404 errors do not return JSON, so we handle them first
+        if ($http_code == 404){
+            return array(
+                'message'   => 'File or directory not found.',
+                'httpCode'  => 404,
+            );
+        }
+
         try {
             $response = $this->json_decode_with_exception($response);
-        } catch (Exception $e) {
+        } catch(Exception $e) {
             throw $e;
         }
 
-        $http_code = curl_getinfo($this->curl_handle, CURLINFO_HTTP_CODE);
         if ($http_code != 200) {
             $response['httpCode'] = $http_code;
             return $response;
         }
 
-
-        // false if not found
-        if (isset($response['message'])) {
-            return false;
-        }
-
         return $response;
+    }
+
+    /**
+     * Queries the API at an endpoint explicitly defined by the function arg.
+     *
+     * @param string $path The API path.
+     * @return void
+     */
+    function customGet($path){
+        return $this->get($path);
     }
 
     /**
@@ -276,4 +273,4 @@ class KuroganeHammer
 
 $kh = new KuroganeHammer();
 
-print_r($kh->getCharacters('morf'));
+print_r($kh->characters->characters());

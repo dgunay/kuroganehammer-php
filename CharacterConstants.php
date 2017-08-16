@@ -1,0 +1,63 @@
+<?php
+
+class Character_Ids
+{
+    const BAYONETTA         = 1;
+    const BOWSER            = 2;
+    const BOWSER_JR         = 3;
+    const CAPTAIN_FALCON    = 4;
+    const CHARIZARD         = 5;
+    const CLOUD             = 6;
+    const CORRIN            = 7;
+    const DARK_PIT          = 8;
+    const DIDDY_KONG        = 9;
+    const DONKEY_KONG       = 10;
+    const DR_MARIO          = 11;
+    const DUCK_HUNT         = 12;
+    const FALCO             = 13;
+    const FOX               = 14;
+    const GANONDORF         = 15;
+    const GRENINJA          = 16;
+    const IKE               = 17;
+    const JIGGLYPUFF        = 18;
+    const KING_DEDEDE       = 19;
+    const KIRBY             = 20;
+    const LINK              = 21;
+    const LITTLE_MAC        = 22;
+    const LUCARIO           = 23;
+    const LUCAS             = 24;
+    const LUCINA            = 25;
+    const LUIGI             = 26;
+    const MARIO             = 27;
+    const MARTH             = 28;
+    const MEGA_MAN          = 29;
+    const META_KNIGHT       = 30;
+    const MEWTWO            = 31;
+    const MII_BRAWLER       = 32;
+    const MII_GUNNER        = 33;
+    const MII_SWORDFIGHTER  = 34;
+    const MR_GAME_WATCH     = 35;
+    const NESS              = 36;
+    const OLIMAR            = 37;
+    const PACMAN            = 38;
+    const PALUTENA          = 39;
+    const PEACH             = 40;
+    const PIKACHU           = 41;
+    const PIT               = 42;
+    const ROB               = 43;
+    const ROBIN             = 44;
+    const ROSALINA_LUMA     = 45;
+    const ROY               = 46;
+    const RYU               = 47;
+    const SAMUS             = 48;
+    const SHEIK             = 49;
+    const SHULK             = 50;
+    const SONIC             = 51;
+    const TOON_LINK         = 52;
+    const VILLAGER          = 53;
+    const WARIO             = 54;
+    const WII_FIT_TRAINER   = 55;
+    const YOSHI             = 56;
+    const ZELDA             = 57;
+    const ZERO_SUIT_SAMUS   = 58;
+}
