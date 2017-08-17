@@ -1,7 +1,14 @@
 <?php
 
-require_once('Characters.php');
+foreach (glob("EndpointFamilies/*.php") as $filename){
+    require_once($filename);
+}
 
+/**
+ * The KuroganeHammer class.
+ * 
+ * TODO: Rewrite documentation for all endpoints.
+ */
 class KuroganeHammer
 {
     /**
