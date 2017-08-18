@@ -8,6 +8,7 @@ foreach (glob("EndpointFamilies/*.php") as $filename){
  * The KuroganeHammer class.
  * 
  * TODO: Rewrite documentation for all endpoints.
+ * TODO: Add BadMethodCallExceptions for endpts requiring id/name.
  */
 class KuroganeHammer
 {
@@ -17,10 +18,91 @@ class KuroganeHammer
      * @var object Characters
      */
     public $characters;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $angles;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $baseDamages;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $baseKnockbacks;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $characterAttributes;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $characterAttributeTypes;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $firstActionableFrames;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $hitboxes;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $knockbackGrowths;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $movements;
+    
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    public $moves;
+    
 
     function __construct()
     {
         $this->characters = new Characters();
+        $this->angles = new Angles();
+        $this->baseDamages = new BaseDamages();
+        $this->baseKnockbacks = new BaseKnockbacks();
+        $this->characterAttributes = new CharacterAttributes();
+        $this->characterAttributeTypes = new CharacterAttributeTypes();
+        $this->firstActionableFrames = new FirstActionableFrames();
+        $this->hitboxes = new Hitboxes();
+        $this->knockbackGrowths = new KnockbackGrowths();
+        $this->movements = new Movements();
+        $this->moves = new Moves();
     }
 
     function __destruct()
@@ -236,4 +318,4 @@ class KuroganeHammer
 
 $kh = new KuroganeHammer();
 
-print_r($kh->characters->angles());
+print_r($kh->moves->autocancel());
