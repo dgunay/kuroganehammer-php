@@ -9,6 +9,7 @@ foreach (glob("EndpointFamilies/*.php") as $filename){
  * 
  * TODO: Rewrite documentation for all endpoints.
  * TODO: Add BadMethodCallExceptions for endpts requiring id/name.
+ * TODO: Refactor endpoint functions that can take id, name, or null.
  */
 class KuroganeHammer
 {
