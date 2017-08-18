@@ -21,7 +21,7 @@ and the library takes care of the request for you.
 ### Lessons learned
 I thought this would be easy at first but turns out designing an intuitive and efficient library actually takes some programming know-how. Something I severely lack. With that noted, you will find that this library lacks tests and probably a few other defensive coding principles. I expect it to have bugs.
 
-Writing this library has been a learning experience in design patterns, as I quickly had to abandon a monolithic design architecture when the number of functions, and resulting cognitive overhead in trying to keep them sufficiently abstract, ballooned out of control.
+Writing this library has been a learning experience in design patterns, as I quickly had to abandon a monolithic design architecture when the number of functions, and resulting cognitive overhead in trying to keep them sufficiently abstract, ballooned out of control. I also ran into my first legitimate use case for the Singleton pattern - sharing a cURL resource across multiple classes.
 
 The library is currently a work in progress. Once finished I hope to add tests to it. The end goal is something useful and usable by anyone who needs this data and is working in PHP.
 
