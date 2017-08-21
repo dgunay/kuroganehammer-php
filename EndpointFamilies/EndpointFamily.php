@@ -6,17 +6,20 @@ require_once('StaticCurlHandle.php');
  * Abstract superclass to represent collections of endpoints nested underneat
  * a parent endpoint (such as '/moves/...' or 'characters...')
  */
-abstract class EndpointFamily {
+abstract class EndpointFamily
+{
     const API_URL_BASE = 'http://api.kuroganehammer.com';
     private $curlInstance;
     
-    function __construct(){
+    function __construct()
+    {
         $this->curlInstance = StaticCurlHandle::getInstance();
     }
 
     // TODO: make the curl handle statically shared (Singleton pattern)
-    protected function configureCurlHandle(){
-        if (self::$curl_handle !== null){
+    protected function configureCurlHandle()
+    {
+        if (self::$curl_handle !== null) {
             $this->curl_handle = curl_init();
             curl_setopt_array($this->curl_handle, array(
                 CURLOPT_SSL_VERIFYPEER  => true,
@@ -30,14 +33,13 @@ abstract class EndpointFamily {
                 CURLOPT_HTTPHEADER      => array(
                     'Accept: application/json,'
                 ),
-            ));    
-
+            ));
         }
     }
 
     /**
      * Function to execute generalized GET requests.
-     * 
+     *
      * @param string $path API path in form '/api/endpoint'.
      * @throws Exception if failed to decode JSON.
      * @return array The API's response decoded as a PHP array, whether the
@@ -57,23 +59,24 @@ abstract class EndpointFamily {
 
         
         // 404 errors do not return JSON, so we handle them first
-        if ($http_code == 404){
+        if ($http_code == 404) {
             return array(
                 'message'   => 'File or directory not found.',
                 'httpCode'  => 404,
             );
+        } elseif ($http_code != 200) {
+            return array(
+                'response'  => $response,
+                'http_code' => $http_code,
+            );
         }
-
+        
         try {
             $response = $this->json_decode_with_exception($response);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
 
-        if ($http_code != 200) {
-            $response['httpCode'] = $http_code;
-            return $response;
-        }
 
         return $response;
     }

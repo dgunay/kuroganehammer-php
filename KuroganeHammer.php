@@ -8,11 +8,14 @@ foreach (glob("EndpointFamilies/*.php") as $filename){
  * The KuroganeHammer class. Allows access to the entire KuroganeHammer API
  * via its properties
  * 
- * @example $kh->characters('Marth); Get simple data about Marth.
+ * @example $kh->characters('Marth'); // Get simple data about Marth.
+ * @example $kh->characters('Marth', true); // Get detailed data about Marth.
  * 
  * TODO: Rewrite documentation for all endpoints.
  * TODO: Add BadMethodCallExceptions for endpts requiring id/name.
  * TODO: Refactor endpoint functions that can take id, name, or null.
+ * TODO: Add a CacheAllEndpoints function to download contents of the 
+ *      database.
  */
 class KuroganeHammer
 {
@@ -32,21 +35,24 @@ class KuroganeHammer
     public $baseDamages;
     
     /**
-     * BaseKnockbacks class, containing functions for each /baseKnockbacks endpoint
+     * BaseKnockbacks class, containing functions for each /baseKnockbacks 
+     * endpoint
      *
      * @var BaseKnockbacks
      */
     public $baseKnockbacks;
     
     /**
-     * CharacterAttributes class, containing functions for each /characterAttributes endpoint
+     * CharacterAttributes class, containing functions for each 
+     * /characterAttributes endpoint
      *
      * @var CharacterAttributes
      */
     public $characterAttributes;
     
     /**
-     * CharacterAttributeTypes class, containing functions for each /characterAttributeTypes endpoint
+     * CharacterAttributeTypes class, containing functions for each 
+     * /characterAttributeTypes endpoint
      *
      * @var CharacterAttributeTypes
      */
@@ -60,7 +66,8 @@ class KuroganeHammer
     public $characters;
     
     /**
-     * FirstActionableFrames class, containing functions for each /firstActionableFrames endpoint
+     * FirstActionableFrames class, containing functions for each 
+     * /firstActionableFrames endpoint
      *
      * @var FirstActionableFrames
      */
@@ -74,7 +81,8 @@ class KuroganeHammer
     public $hitboxes;
     
     /**
-     * KnockbackGrowths class, containing functions for each /knockbackGrowths endpoint
+     * KnockbackGrowths class, containing functions for each /knockbackGrowths 
+     * endpoint
      *
      * @var KnockbackGrowths
      */
@@ -102,14 +110,16 @@ class KuroganeHammer
     public $notations;
 
     /**
-     * SetKnockbacks class, containing functions for each /setKnockbacks endpoint
+     * SetKnockbacks class, containing functions for each /setKnockbacks 
+     * endpoint
      *
      * @var SetKnockbacks
      */
     public $setKnockbacks;
 
     /**
-     * SmashAttributeTypes class, containing functions for each /smashAttributeTypes endpoint
+     * SmashAttributeTypes class, containing functions for each 
+     * /smashAttributeTypes endpoint
      *
      * @var SmashAttributeTypes
      */
@@ -149,12 +159,8 @@ class KuroganeHammer
     {
 
     }
-
-    function customGet($path){
-        return (EndpointFamily::get($path));
-    }
 }
 
 $kh = new KuroganeHammer();
 
-print_r($kh->customGet('/api/angles'));
+print_r($kh->angles->angles(2600, array('ownerId')));
