@@ -99,4 +99,26 @@ abstract class EndpointFamily
 
         return $result;
     }
+
+    // /**
+    //  * Adds parameters from an array onto 
+    //  *
+    //  * @param string $url
+    //  * @param array $params
+    //  * @return void
+    //  */
+    // private function add_params_to_url($url, array $params = array()){
+    //     if (count($params) > 0) { // add requested fields
+    //         $url_params = '?fields=';
+    //         for ($i = 0; $i < count($params); $i++) {
+    //             $url_params .= $params[$i];
+    //             if ($i < count($params) - 1) {
+    //                 $url_params .= ',';
+    //             }
+    //         }
+    //         return $url .= $url_params;
+    //     }
+
+    //     return $url;
+    // }
 }

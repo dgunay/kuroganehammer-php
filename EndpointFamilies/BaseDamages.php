@@ -16,32 +16,33 @@ class BaseDamages extends EndpointFamily
     }
 
     /**
-     * Gets all Smash 4 characters, or a single character by ID or name.
+     * Gets all base damages, or a move's base damage by ID.
      *
-     * @param mixed $id ID number of a character, or name.
-     * @param bool $details Whether or not to include detailed metadata.
-     * @return mixed Response from the API decoded into a PHP array, or false
-     *  if ID is provided but not found.
+     * Can return a certain set of fields exclusively.
+     *
+     * @param string $id base damage ID.
+     * @param array $fields Fields to return
+     * @return mixed
      */
-    function baseDamages($id = null)
+    function baseDamages($id = null, array $fields = array())
     {
-        if ($id !== null) {
-            return $this->request($id);
-        }
-
-        return $this->request();
+        return $this->request($id, $fields);
     }
 
     /**
-     * Helper function to generalize requests across all /characters API
+     * Helper function to generalize requests across all /basedamages API
      * endpoints.
+     * 
+     * Returns a specific set of fields if requested.
      *
      * @param mixed $id ID or name of a character
      * @param string $endpoint The api/characters/endpoint to use.
+     * @param array $fields Array of field names to request from the API. Gets
+     *  all if empty. Field names that do not exist in the API return nothing.
      * @return mixed Response from the API decoded into a PHP array, or false
      *  if ID is provided but not found.
      */
-    private function request($id = null)
+    private function request($id = null, array $fields = array())
     {
         $path = self::ENDPOINT_BASE;
         if ($id !== null) {
@@ -50,6 +51,17 @@ class BaseDamages extends EndpointFamily
             }
             
             $path .= '/' . $id;
+        }
+        
+        if (count($fields) > 0) { // add requested fields
+            $url_params = '?fields=';
+            for ($i = 0; $i < count($fields); $i++) {
+                $url_params .= $fields[$i];
+                if ($i < count($fields) - 1) {
+                    $url_params .= ',';
+                }
+            }
+            $path .= $url_params;
         }
         
         return $this->get($path);

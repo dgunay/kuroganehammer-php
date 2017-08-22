@@ -1,21 +1,24 @@
 <?php
 
-foreach (glob("EndpointFamilies/*.php") as $filename){
+foreach (glob("EndpointFamilies/*.php") as $filename) {
     require_once($filename);
 }
 
 /**
  * The KuroganeHammer class. Allows access to the entire KuroganeHammer API
  * via its properties
- * 
+ *
  * @example $kh->characters('Marth'); // Get simple data about Marth.
  * @example $kh->characters('Marth', true); // Get detailed data about Marth.
- * 
+ *
  * TODO: Rewrite documentation for all endpoints.
  * TODO: Add BadMethodCallExceptions for endpts requiring id/name.
  * TODO: Refactor endpoint functions that can take id, name, or null.
- * TODO: Add a CacheAllEndpoints function to download contents of the 
+ * TODO: Look into generalizing/refactoring URL parameter adding functions
+ * TODO: Add a CacheAllEndpoints function to download contents of the
  *      database.
+ * TODO: Refactor call flow to be $kh->service() for basic getAll calls, or
+ *      $kh->service()->subService() for specific endpoints
  */
 class KuroganeHammer
 {
@@ -35,7 +38,7 @@ class KuroganeHammer
     public $baseDamages;
     
     /**
-     * BaseKnockbacks class, containing functions for each /baseKnockbacks 
+     * BaseKnockbacks class, containing functions for each /baseKnockbacks
      * endpoint
      *
      * @var BaseKnockbacks
@@ -43,7 +46,7 @@ class KuroganeHammer
     public $baseKnockbacks;
     
     /**
-     * CharacterAttributes class, containing functions for each 
+     * CharacterAttributes class, containing functions for each
      * /characterAttributes endpoint
      *
      * @var CharacterAttributes
@@ -51,7 +54,7 @@ class KuroganeHammer
     public $characterAttributes;
     
     /**
-     * CharacterAttributeTypes class, containing functions for each 
+     * CharacterAttributeTypes class, containing functions for each
      * /characterAttributeTypes endpoint
      *
      * @var CharacterAttributeTypes
@@ -66,7 +69,7 @@ class KuroganeHammer
     public $characters;
     
     /**
-     * FirstActionableFrames class, containing functions for each 
+     * FirstActionableFrames class, containing functions for each
      * /firstActionableFrames endpoint
      *
      * @var FirstActionableFrames
@@ -81,7 +84,7 @@ class KuroganeHammer
     public $hitboxes;
     
     /**
-     * KnockbackGrowths class, containing functions for each /knockbackGrowths 
+     * KnockbackGrowths class, containing functions for each /knockbackGrowths
      * endpoint
      *
      * @var KnockbackGrowths
@@ -110,7 +113,7 @@ class KuroganeHammer
     public $notations;
 
     /**
-     * SetKnockbacks class, containing functions for each /setKnockbacks 
+     * SetKnockbacks class, containing functions for each /setKnockbacks
      * endpoint
      *
      * @var SetKnockbacks
@@ -118,7 +121,7 @@ class KuroganeHammer
     public $setKnockbacks;
 
     /**
-     * SmashAttributeTypes class, containing functions for each 
+     * SmashAttributeTypes class, containing functions for each
      * /smashAttributeTypes endpoint
      *
      * @var SmashAttributeTypes
@@ -157,10 +160,10 @@ class KuroganeHammer
 
     function __destruct()
     {
-
+        // Doesn't need to handle anything in the destructor (yet)
     }
 }
 
 $kh = new KuroganeHammer();
 
-print_r($kh->angles->angles(2600, array('ownerId')));
+print_r($kh->baseDamages->baseDamages());

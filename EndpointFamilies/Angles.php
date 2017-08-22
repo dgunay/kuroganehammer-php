@@ -17,12 +17,12 @@ class Angles extends EndpointFamily
 
     /**
      * Gets all angles or an angle by Angle ID.
-     * 
+     *
      * Can return a certain set of fields exclusively.
      *
      * @param string $id Angle ID
      * @param array $fields Fields to return
-     * @return array API response.
+     * @return mixed API response
      */
     function angles($id = null, array $fields = array())
     {
@@ -33,7 +33,7 @@ class Angles extends EndpointFamily
      * Helper function to generalize requests across all /angles API
      * endpoints.
      *
-     * Returns a specific set of fields if requested. 
+     * Returns a specific set of fields if requested.
      *
      * @param mixed $id Angle ID.
      * @param string $endpoint The api/angles endpoint to use.
